@@ -1,3 +1,9 @@
+/**
+File: assign1_16CS60R83
+@Author: Abhishek Tiwari
+
+
+*/
 #include<stdio.h>
 #include<assert.h>
 #include<string.h>
@@ -6,21 +12,32 @@
 #include<math.h>
 #include<sys/wait.h>
 #include<time.h>
+
+
+/**
+function: merge
+task: merge two sorted parts in an array, first from [start..mid] and second from [mid+1..end]
+arguements:
+1- number of words in file
+2- array of words
+3- start address
+4- mid
+5- end
+
+*/
+
 void merge(int file_size,char words[][50],int start,int mid,int end)
 {
 	int left=mid-start+1;
 	int right=end-mid,i,j;
-	//printf("came\n");
 	char word_l[500][50],word_r[500][50];
 	for(i=0;i<left;i++)
 	{
 		strcpy(word_l[i],words[start+i]);
-		//printf("left %s\n",word_l[i]);
 	}
 	for( i=0;i<right;i++)
 	{
 		strcpy(word_r[i],words[mid+i+1]);
-		//printf("right %s\n",word_r[i]);
 	}
 
 	int k=start;
@@ -38,26 +55,30 @@ void merge(int file_size,char words[][50],int start,int mid,int end)
 		}
 
 	}
-	//printf("aisa %d %d\n",i,j);
 	while(i<left)
 	{
 		strcpy(words[k++],word_l[i]);
 		i++;
 
 	}
-	//printf("h\n");
 	while(j<right)
 	{
 		strcpy(words[k++],word_r[j]);
 		j++;
 	}
 
-	//printf("n");
-	//for(i=0;i<k;i++)
-	//printf("%s\n",words[i]);
 }
 
+/**
+function: sort
+task: sort the given array of words
+arguements: 
+1- number of words in array
+2- array of words
+3- start index
+4- end index
 
+*/
 void sort(int file_size,char file[][50],int start,int end)
 {
 	if(start==end)
@@ -66,13 +87,22 @@ void sort(int file_size,char file[][50],int start,int end)
 	sort(file_size,file,start,mid);
 	sort(file_size,file,mid+1,end);
 
-	//printf("merging %d %d %d\n",start,mid,end);
 	merge(file_size,file,start,mid,end);
 
 
 }
 
+/**
+function: find_unique
+task: find unique words from given sorted list of words adn store their frequency
+arguements: 
+1- number of words in sorted list
+2- array of sorted words
+3- resultant array having unique words
+4- frequency of correspoding unique words
 
+returns index of last unique word
+*/
 
 
 int find_unique(int num,char words[][50],char unique[][50],int freq[])
@@ -99,6 +129,18 @@ int find_unique(int num,char words[][50],char unique[][50],int freq[])
 	return k;
 }
 
+
+
+/**
+function: comp_unique
+task: compares unique words from file 1 and file 2 stored in uniq1 and uniq2
+arguements: 
+1- number of unique words in file 1
+2- array of unique words
+3- number of unique words in file 2
+4- array of uniq words in file 2
+returns number of common unique words in file1 and2
+*/
 int comp_unique(int no1,char uniq1[][50],int no2,char uniq2[][50])
 {
 	int i=0,j=0,com=0;
@@ -120,7 +162,17 @@ int comp_unique(int no1,char uniq1[][50],int no2,char uniq2[][50])
 
 
 //new for forking
+/**
+function : find_uniq_each
+task: finds unique words and their frequencies for different chunks given to different processes
+arguements:
+1- size of file
+2- array of words
+3- start index
+4- end index
+5- file in which output is saved
 
+*/
 void find_uniq_each(int size,char words[][50],int start,int end,char file_cr[])
 {
 	FILE *fp=fopen(file_cr,"w+");
@@ -159,6 +211,19 @@ void find_uniq_each(int size,char words[][50],int start,int end,char file_cr[])
 }
 
 //merge files
+/**
+
+function: merge_file
+task: merge different chunks of file together mainting the property of uniqueness and counting their respective frequencies
+arguements:
+1- size of files merged+size of new chunk to be added
+2- array of words to be merged
+3- frequencies of the words
+4- start index
+5- index at which file devides [start..mid] and [mid+1..end]
+6- end index
+returns total unique words after merging
+*/
 int merge_file(int file_size,char words[][50],int freq[],int start,int mid,int end)
 {
 	if(mid-1<0)
@@ -173,13 +238,11 @@ int merge_file(int file_size,char words[][50],int freq[],int start,int mid,int e
 	{
 		strcpy(word_l[i],words[start+i]);
 		freq_left[i]=freq[start+i];
-		//printf("left %s\n",word_l[i]);
 	}
 	for( i=0;i<right;i++)
 	{
 		strcpy(word_r[i],words[mid+i+1]);
 		freq_right[i]=freq[mid+i+1];
-		//printf("right %s\n",word_r[i]);
 	}
 
 	int k=start;
@@ -204,7 +267,6 @@ int merge_file(int file_size,char words[][50],int freq[],int start,int mid,int e
 		}
 
 	}
-	//printf("aisa %d %d\n",i,j);
 	while(i<left)
 	{
 		strcpy(words[k],word_l[i]);
@@ -212,7 +274,6 @@ int merge_file(int file_size,char words[][50],int freq[],int start,int mid,int e
 		i++;k++;
 
 	}
-	//printf("h\n");
 	while(j<right)
 	{
 		strcpy(words[k],word_r[j]);
@@ -220,9 +281,6 @@ int merge_file(int file_size,char words[][50],int freq[],int start,int mid,int e
 		j++;k++;
 	}
 
-	//printf("n");
-	//for(i=0;i<k;i++)
-	//printf("%s\n",words[i]);
 	return k;//total number
 }
 
@@ -245,8 +303,6 @@ int main()
 	pid_t pids,proc[500],proc2[500];
 	scanf("%s ",filename1);
 	scanf("%s",filename2);
-	//printf("%so\n%so",filename1,filename2);
-	//puts(filename2);    
 	openfile1=fopen(filename1,"r");
 	openfile2=fopen(filename2,"r");
 	if(openfile1==NULL||openfile2==NULL)
@@ -254,13 +310,9 @@ int main()
 		printf("-1\n");
 	}
 
-	//read_input(wordsin1[][],wordsin2[][]);
 	fscanf(openfile1,"%d ",&no_in_file1);
-	//puts(take_input);
 	fscanf(openfile2,"%d ",&no_in_file2);
-	//puts(take_input);
 
-	//read_input(wordsin1[][],no_in_file1,wordsin2[][]
 
 	for(iterate1=0;iterate1<no_in_file1;iterate1++)
 	{
@@ -271,7 +323,6 @@ int main()
 		fscanf(openfile2,"%s ",wordsin2[iterate2]);
 	}
 
-	//printf("%s %s\n",wordsin1[0],wordsin2[0]);
 	scanf("%d",&chunks);
 	if(no_in_file1%chunks==0)
 		size_chunk=no_in_file1/chunks;
@@ -297,7 +348,6 @@ int main()
 			exit(0);
 		}
 	}
-	//second file
 
 	if(no_in_file2%chunks==0)
 		size_chunk=no_in_file2/chunks;
@@ -348,14 +398,9 @@ int main()
 		}
 
 		op1 = merge_file(file_size+op1,wordsin1,freq1,0,op1-1,file_size+op1-1);
-		//for(iter_op1=0;iter_op1<op1;iter_op1++)
-		//printf("%s %d\n",wordsin1[iter_op1],freq1[iter_op1]);
-
-		//printf("\n");
 		fclose(inp_file);
 	}
 
-	//print op
 	fprintf(output_file,"%d\n",op1);
 	for(iter_op1=0;iter_op1<op1;iter_op1++)
 	{
@@ -364,11 +409,9 @@ int main()
 
 
 
-	//merging the output files 2
 
 
 	op2=0;
-	//op2=0;
 	memset(wordsin2,0,sizeof wordsin2);
 	output_file=fopen("final2.op","w");
 	for(proc_iter=0;proc_iter<chunks;proc_iter++)
@@ -414,13 +457,13 @@ int main()
 	  printf("}\n");
 	 */
 	common=comp_unique(op1,wordsin1,op2,wordsin2);
-	printf("%d %d\n",op1,op2);
-	printf("similarity:%d %.2f\n",common,(float)common/(float)(op1+op2-common));
+	printf("Unique words in file1: %d\nUnique words in file2: %d\n",op1,op2);
+	printf("similarity: %.2f%%\n",(float)common/(float)(op1+op2-common)*100);
 
 
-end=clock();
-time_spent=((double)(end-start))/CLOCKS_PER_SEC;
-printf(" Elapsed %lf seconds\n",time_spent);
-	printf("done successfully :)\n");
+	end=clock();
+	time_spent=((double)(end-start))/CLOCKS_PER_SEC;
+	printf("Elapsed %lf seconds\n",time_spent);
+	//printf("done successfully :)\n");
 	return 0;
 }

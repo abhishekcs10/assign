@@ -231,7 +231,7 @@ int merge_file(int file_size,char words[][50],int freq[],int start,int mid,int e
 
 int main()
 {
-	clock_t start=clock(),end;
+	clock_t begin=clock(),end;
 	FILE *openfile1,*openfile2,*output_file,*inp_file;
 	char filename1[50],filename2[50];
 	char take_input[50],inp_buffer[50];
@@ -419,8 +419,8 @@ int main()
 
 
 end=clock();
-time_spent=((double)(end-start))/CLOCKS_PER_SEC;
-printf(" Elapsed %lf seconds\n",time_spent);
+time_spent=(double)(end-begin)/CLOCKS_PER_SEC;
+printf("Elapsed %lf seconds\n",time);
 	printf("done successfully :)\n");
 	return 0;
 }

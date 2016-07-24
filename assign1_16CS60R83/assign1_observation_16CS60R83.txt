@@ -1,0 +1,3 @@
+Observation:
+On executing program with multiple process by diving input data into k chunks, the time taken to execute the program also increases.
+

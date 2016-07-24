@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<assert.h>
 #include<string.h>
+#include<time.h>
 void merge(int file_size,char words[][50],int start,int mid,int end)
 {
 int left=mid-start+1;
@@ -116,7 +117,7 @@ return com;
 
 int main()
 {
-
+clock_t start=clock(),end;
 FILE *openfile1,*openfile2;
 char filename1[50],filename2[50];
 char take_input[50];
@@ -166,6 +167,8 @@ printf("}\n");
 common=comp_unique(uniquein1+1,unique1,uniquein2+1,unique2);
 printf("%d %d\n",uniquein1,uniquein2);
 printf("similarity:%d %.2f\n",common,(float)common/(float)(uniquein1+1+uniquein2+1-common));
-//printf("done successfully :)\n");
+end=clock();
+printf("cute %lf\n",(((double)(end-start))/CLOCKS_PER_SEC));
+printf("done successfully :)\n");
 return 0;
 }

@@ -1,3 +1,9 @@
+/**
+File: assign1_16CS60R83
+@Author: Abhishek Tiwari
+
+
+*/
 #include<stdio.h>
 #include<assert.h>
 #include<string.h>
@@ -6,21 +12,32 @@
 #include<math.h>
 #include<sys/wait.h>
 #include<time.h>
+
+
+/**
+function: merge
+task: merge two sorted parts in an array, first from [start..mid] and second from [mid+1..end]
+arguements:
+1- number of words in file
+2- array of words
+3- start address
+4- mid
+5- end
+
+*/
+
 void merge(int file_size,char words[][50],int start,int mid,int end)
 {
 	int left=mid-start+1;
 	int right=end-mid,i,j;
-	//printf("came\n");
 	char word_l[500][50],word_r[500][50];
 	for(i=0;i<left;i++)
 	{
 		strcpy(word_l[i],words[start+i]);
-		//printf("left %s\n",word_l[i]);
 	}
 	for( i=0;i<right;i++)
 	{
 		strcpy(word_r[i],words[mid+i+1]);
-		//printf("right %s\n",word_r[i]);
 	}
 
 	int k=start;
@@ -38,26 +55,29 @@ void merge(int file_size,char words[][50],int start,int mid,int end)
 		}
 
 	}
-	//printf("aisa %d %d\n",i,j);
 	while(i<left)
 	{
 		strcpy(words[k++],word_l[i]);
 		i++;
 
 	}
-	//printf("h\n");
 	while(j<right)
 	{
 		strcpy(words[k++],word_r[j]);
 		j++;
 	}
 
-	//printf("n");
-	//for(i=0;i<k;i++)
-	//printf("%s\n",words[i]);
 }
 
+/**
+function: sort
+task: sort the given array of words
+arguements: 
+1- number of words in array
+2- array of words
+3- nu
 
+*/
 void sort(int file_size,char file[][50],int start,int end)
 {
 	if(start==end)
@@ -66,7 +86,6 @@ void sort(int file_size,char file[][50],int start,int end)
 	sort(file_size,file,start,mid);
 	sort(file_size,file,mid+1,end);
 
-	//printf("merging %d %d %d\n",start,mid,end);
 	merge(file_size,file,start,mid,end);
 
 
