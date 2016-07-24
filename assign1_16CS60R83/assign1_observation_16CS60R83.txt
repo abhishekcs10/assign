@@ -1,3 +1,14 @@
 Observation:
 On executing program with multiple process by diving input data into k chunks, the time taken to execute the program also increases.
 
+1	.000759
+2	.002126
+3	.001692
+4	.002059
+5	.002236
+6	.002122
+7	.003788
+8	.003611
+9	.003806
+10	.004948
+
